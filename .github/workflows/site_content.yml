@@ -1,0 +1,40 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Generate Site content
+
+on:
+  # Runs on schedule targeting the default branch
+  schedule:
+      - cron: '0 * * * *'
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow content update
+permissions:
+  contents: write
+  pages: read
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group:  ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  generate:
+    environment:
+      name: site-content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate Content
+        run: |
+          ./.devcontainer/scripts/createPageContent.sh         
+      - name: Commit Changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
