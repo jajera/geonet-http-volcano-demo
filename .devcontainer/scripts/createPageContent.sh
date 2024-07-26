@@ -1,8 +1,9 @@
 #!/bin/bash
 
 CURRENT_YEAR=$(date +'%Y')
-SUB_DIRS='KAKA KMTP MTSR RIMK TEMO TOKR WHOH'
-SUB_DIR_NAMES=("Tongariro" "Ruapehu & Ngauruhoe" "Ruapehu South" "Raoul Island" "Taranaki" "Tongariro Te Maari Crater" "Whakatane")
+SUB_DIRS='DISC DISC KAKA KMTP MTSR RIMK TEMO TOKR WHOH'
+SUB_DIRS_L2=("DISC.01" "DISC.02" "KAKA.01" "KMTP.01" "MTSR.01" "RIMK.01" "TEMO.02" "TOKR.01" "WHOH.02")
+SUB_DIR_NAMES=("Ruapehu North" "Ngauruhoe" "Tongariro" "Ruapehu & Ngauruhoe" "Ruapehu South" "Raoul Island" "Taranaki" "Tongariro Te Maari Crater" "Whakatane")
 HTTP_DATA_URL="https://data.geonet.org.nz"
 
 TOP_CONTENT='
@@ -250,12 +251,12 @@ TOP_CONTENT='
 
 index=0
 for SUB_DIR in $SUB_DIRS; do
-	echo "Processing $SUB_DIR"
-  FILTER_URL="${HTTP_DATA_URL}/camera/volcano/images/${CURRENT_YEAR}/${SUB_DIR}/"
-  SUB_DIR_L2=$(curl -s $FILTER_URL | grep '^<a href' | sed 's/.*href="\([^"]*\)".*/\1/')
-  SUB_DIR_L3=$(curl -s $FILTER_URL$SUB_DIR_L2 | grep '^<a href' | tail -n 1 | sed 's/.*href="\([^"]*\)".*/\1/')
-  FILENAME=$(curl -s $FILTER_URL$SUB_DIR_L2$SUB_DIR_L3 | grep '^<a href' | tail -n 1 | sed 's/.*href="\([^"]*\)".*/\1/')
-  LATEST_IMAGE_URL=$FILTER_URL$SUB_DIR_L2$SUB_DIR_L3$FILENAME
+  SUB_DIR_L2=$(echo "${SUB_DIRS_L2[$index]}/")
+	echo "Processing $SUB_DIR/$SUB_DIR_L2"
+  FILTER_URL="${HTTP_DATA_URL}/camera/volcano/images/${CURRENT_YEAR}/${SUB_DIR}/${SUB_DIR_L2}"
+  SUB_DIR_L3=$(curl -s $FILTER_URL| grep '^<a href' | tail -n 1 | sed -n 's/.*href="\([^/]*\)\/".*/\1/p')
+  FILENAME=$(curl -s $FILTER_URL$SUB_DIR_L3/ | grep '^<a href' | tail -n 1 | sed 's/.*href="\([^"]*\)".*/\1/')
+  LATEST_IMAGE_URL=$FILTER_URL$SUB_DIR_L3/$FILENAME
   LOCATION=$(echo "${SUB_DIR_NAMES[$index]}")
   DATETIMESTAMP_RAW="$(echo $FILENAME | grep -oP '\d{4}\.\d{3}\.\d{4}')"
   YEAR=$(echo "$DATETIMESTAMP_RAW" | cut -d '.' -f1)
@@ -265,7 +266,7 @@ for SUB_DIR in $SUB_DIRS; do
   DATETIMESTAMP=$(echo "$DATE_MONTH $YEAR, $TIME")
 	BODY_CONTENT+="
         <tr>
-            <td>$SUB_DIR</td>
+            <td>$SUB_DIR/$SUB_DIR_L2</td>
             <td>$LOCATION</td>
             <td>$FILENAME</td>
             <td>$DATETIMESTAMP</td>
