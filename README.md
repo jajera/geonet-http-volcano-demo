@@ -1,6 +1,6 @@
 # GeoNet Volcano Camera Demo
 
-[![Generate Site content](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/site_content.yml/badge.svg)](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/site_content.yml) [![Deploy static content to Pages](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/static.yml/badge.svg)](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/static.yml)
+[![Generate Site content](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/site_content.yml/badge.svg)](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/site_content.yml) [![Deploy to GitHub Pages](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/pages.yml/badge.svg)](https://github.com/jajera/geonet-http-volcano-demo/actions/workflows/pages.yml)
 
 A web-based demonstration application that displays real-time volcano camera images from GeoNet (New Zealand's geological hazard monitoring system). This application provides a user-friendly interface to view and monitor various volcanic sites across New Zealand.
 
